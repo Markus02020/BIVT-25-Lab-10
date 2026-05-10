@@ -6,5 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+<ItemGroup>
+  <ProjectReference Include="..\Lab9\Lab9.csproj" />
+</ItemGroup>
 
 </Project>
