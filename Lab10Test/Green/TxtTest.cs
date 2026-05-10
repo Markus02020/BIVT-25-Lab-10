@@ -1,13 +1,11 @@
 using Lab10;
 using Lab10.Green;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Linq;
 using System.Text.Json;
 
 namespace Lab10Test.Green
 {
     [TestClass]
-    public sealed class JsonTest
+    public sealed class TxtTest
     {
         private Lab9.Green.Green[] _tasks;
         private string[] _input;
@@ -26,12 +24,12 @@ namespace Lab10Test.Green
         }
 
         [TestMethod]
-        public void Test_00_OOP_JsonManager()
+        public void Test_00_OOP_TxtManager()
         {
-            var type = typeof(GreenJsonFileManager);
+            var type = typeof(GreenTxtFileManager);
 
-            Assert.IsTrue(type.IsClass, "GreenJsonFileManager must be class");
-            Assert.IsFalse(type.IsAbstract, "GreenJsonFileManager must NOT be abstract");
+            Assert.IsTrue(type.IsClass, "GreenTxtFileManager must be class");
+            Assert.IsFalse(type.IsAbstract, "GreenTxtFileManager must NOT be abstract");
 
             Assert.IsTrue(typeof(GreenFileManager).IsAssignableFrom(type),
                 "Must inherit from GreenFileManager");
@@ -52,12 +50,12 @@ namespace Lab10Test.Green
         }
 
         [TestMethod]
-        public void Test_01_Serialize_JSON()
+        public void Test_01_Serialize_Txt()
         {
-            ISerializer manager = new GreenJsonFileManager("test");
+            ISerializer manager = new GreenTxtFileManager("test");
             var fileManager = (IFileManager)manager;
 
-            var folder = Path.Combine(Directory.GetCurrentDirectory(), "JsonTest1");
+            var folder = Path.Combine(Directory.GetCurrentDirectory(), "TxtTest1");
             Directory.CreateDirectory(folder);
 
             fileManager.SelectFolder(folder);
@@ -76,22 +74,19 @@ namespace Lab10Test.Green
                 Assert.IsTrue(!string.IsNullOrEmpty(content),
                     $"Empty file for task {i}");
 
-                var json = JObject.Parse(content);
-                var input = json["Input"].ToString();
-
-                Assert.AreEqual(_input[i], input,
-                    $"Input mismatch for task {i}");
+                Assert.IsTrue(content.Contains(_input[i]),
+                    $"No Input field in TXT for task {i}");
             }
             Directory.Delete(folder, true);
         }
 
         [TestMethod]
-        public void Test_02_Deserialize_JSON()
+        public void Test_02_Deserialize_Txt()
         {
-            ISerializer manager = new GreenJsonFileManager("test");
+            ISerializer manager = new GreenTxtFileManager("test");
             var fileManager = (IFileManager)manager;
 
-            var folder = Path.Combine(Directory.GetCurrentDirectory(), "JsonTest2");
+            var folder = Path.Combine(Directory.GetCurrentDirectory(), "TxtTest2");
             Directory.CreateDirectory(folder);
 
             fileManager.SelectFolder(folder);
@@ -110,18 +105,19 @@ namespace Lab10Test.Green
                 Assert.AreEqual(_tasks[i].Input, result.Input,
                     $"Input mismatch for task {i}");
 
-                Assert.AreEqual(_tasks[i].ToString(), result.ToString(), $"No Output match in JSON for task {i}");
+                Assert.AreEqual(_tasks[i].ToString(), result.ToString(), $"No Output match in TXT for task {i}");
             }
+
             Directory.Delete(folder, true);
         }
 
         [TestMethod]
-        public void Test_03_EditFile()
+        public void Test_03_EditFile_Txt()
         {
-            var manager = new GreenJsonFileManager("test");
+            var manager = new GreenTxtFileManager("test");
             var fileManager = (IFileManager)manager;
 
-            var folder = Path.Combine(Directory.GetCurrentDirectory(), "JsonEdit");
+            var folder = Path.Combine(Directory.GetCurrentDirectory(), "TxtEdit");
             Directory.CreateDirectory(folder);
 
             for (int i = 0; i < 4; i++)
