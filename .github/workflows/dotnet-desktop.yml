@@ -62,10 +62,10 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Restore
-        run: dotnet restore Lab9/Lab9.sln
+        run: dotnet restore Lab10/Lab10.sln
 
       - name: Build
-        run: dotnet build Lab9/Lab9.sln --configuration ${{ matrix.configuration }} --no-restore
+        run: dotnet build Lab10/Lab10.sln --configuration ${{ matrix.configuration }} --no-restore
 
       - name: Run tests (league cascade)
         id: cascade
@@ -73,11 +73,11 @@ jobs:
         env:
           CFG: ${{ matrix.configuration }}
         run: |
-          $proj = "Lab9test/Lab9test.csproj"
+          $proj = "Lab10test/Lab10test.csproj"
           Write-Host "Building test project..."
           dotnet build $proj -c $Env:CFG
 
-          $dll = Join-Path $PWD "Lab9test\bin\$Env:CFG\net8.0\Lab9test.dll"
+          $dll = Join-Path $PWD "Lab10test\bin\$Env:CFG\net8.0\Lab10test.dll"
           if (-not (Test-Path $dll)) {
             Write-Error "DLL не найдена: $dll"
             exit 1
